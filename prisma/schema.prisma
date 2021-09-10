@@ -1,0 +1,118 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOWBASE_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialActions"]
+}
+
+model User {
+  id           Int           @id @default(autoincrement())
+  username     String        @unique
+  password     String
+  firstName    String
+  lastName     String
+  email        String        @unique
+  guestRole    String?
+  hostRole     String?
+  avatar       String
+  guestProfile GuestProfile?
+  hostProfile  HostProfile?
+}
+
+model GuestProfile {
+  id        Int        @id @default(autoincrement())
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  bio       String?
+  wishlists WishList[]
+  reviews   Review[]
+  bookings  Booking[]
+}
+
+model HostProfile {
+  id     Int     @id @default(autoincrement())
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+  bio    String?
+  houses House[]
+}
+
+model WishList {
+  id           Int          @id @default(autoincrement())
+  guestProfile GuestProfile @relation(fields: [guestId], references: [id], onDelete: Cascade)
+  guestId      Int
+  house        House        @relation(fields: [houseId], references: [id], onDelete: Cascade)
+  houseId      Int
+}
+
+model House {
+  id          Int         @id @default(autoincrement())
+  name        String
+  bedrooms    Int
+  maxGuests   Int
+  facility    String[]
+  city        String
+  wishList    WishList[]
+  hostProfile HostProfile @relation(fields: [hostId], references: [id], onDelete: Cascade)
+  hostId      Int
+  price       Int
+  reviews     Review[]
+  pictures    Picture[]
+  bookings    Booking[]
+}
+
+model Review {
+  id           Int          @id @default(autoincrement())
+  content      String
+  house        House        @relation(fields: [houseId], references: [id], onDelete: Cascade)
+  houseId      Int
+  guestProfile GuestProfile @relation(fields: [guestId], references: [id], onDelete: Cascade)
+  guestId      Int
+}
+
+model Booking {
+  id           Int          @id @default(autoincrement())
+  total        Int          @default(0)
+  guestProfile GuestProfile @relation(fields: [guestId], references: [id], onDelete: Cascade)
+  guestId      Int
+  start        DateTime     @unique @db.Date
+  end          DateTime     @unique @db.Date
+  house        House        @relation(fields: [houseId], references: [id])
+  houseId      Int
+}
+
+model Picture {
+  id      Int    @id @default(autoincrement())
+  house   House  @relation(fields: [houseId], references: [id], onDelete: Cascade)
+  houseId Int
+  src     String
+  alt     String
+}
+
+//1 fetch all houses include host avatar and username, review with guest avatar and guest usename
+//houses={everything in the house except host id, all reviews wiyh each guest avatar and guest username}[]
+// after sign in
+//2 auth route to authenticate who the user is
+//or create new user
+//3 create new user route
+//4 search route could be searching address/date/guests/bedrooms
+//5 check guest information (guest profile page)
+//6 check host information (host profile page)
+//7 guest dash board fetch all bookings
+//8 host dash board fetch all bookings
+//9 add booking route for guest
+//10 create house list for host
+//11 cancel booking route for guest
+//17 cancel booking route for host
+//12 edit house info for host
+//13 cancel listing for host
+//14 edit infomation for host
+//15 edit infomation for guest
+//16 add review route for user
