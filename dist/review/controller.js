@@ -19,6 +19,7 @@ function createNewReview(req, res) {
         const { id } = req.currentUser;
         //req.body only need content and houseId
         const newReview = req.body;
+        console.log(newReview);
         try {
             const newReviewResult = yield review.create({
                 data: {

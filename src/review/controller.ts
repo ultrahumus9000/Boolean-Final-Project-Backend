@@ -7,6 +7,7 @@ async function createNewReview(req: Request, res: Response) {
   const { id } = req.currentUser as User;
   //req.body only need content and houseId
   const newReview = req.body;
+  console.log(newReview);
   try {
     const newReviewResult = await review.create({
       data: {
