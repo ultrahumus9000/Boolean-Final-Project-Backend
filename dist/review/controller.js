@@ -13,19 +13,35 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const database_1 = __importDefault(require("../database"));
-const { review } = database_1.default;
+const { review, user } = database_1.default;
 function createNewReview(req, res) {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         const { id } = req.currentUser;
         //req.body only need content and houseId
-        const newReview = req.body;
-        console.log(newReview);
         try {
+            const guestInfo = yield user.findUnique({
+                where: {
+                    id,
+                },
+                select: {
+                    guestProfile: {
+                        select: {
+                            id: true,
+                        },
+                    },
+                },
+            });
+            const realGuestId = (_a = guestInfo === null || guestInfo === void 0 ? void 0 : guestInfo.guestProfile) === null || _a === void 0 ? void 0 : _a.id;
+            if (realGuestId === undefined) {
+                return;
+            }
+            const newReview = req.body;
             const newReviewResult = yield review.create({
                 data: {
                     content: newReview.content,
                     houseId: newReview.houseId,
-                    guestId: id,
+                    guestId: realGuestId,
                 },
             });
             res.json(newReviewResult);
