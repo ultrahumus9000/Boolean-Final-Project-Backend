@@ -1,3 +1,4 @@
+import { User } from ".prisma/client";
 import { Request, Response } from "express";
 import db from "../database";
 
@@ -33,4 +34,18 @@ async function createNewUser(req: Request, res: Response) {
   }
 }
 
-export { createNewUser };
+async function deleteUser(req: Request, res: Response) {
+  const { id } = req.currentUser as User;
+  try {
+    await user.delete({
+      where: {
+        id,
+      },
+    });
+    res.json("deleted");
+  } catch (error) {
+    res.status(401).json(error);
+  }
+}
+
+export { createNewUser, deleteUser };

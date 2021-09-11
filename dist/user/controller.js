@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createNewUser = void 0;
+exports.deleteUser = exports.createNewUser = void 0;
 const database_1 = __importDefault(require("../database"));
 const service_1 = __importDefault(require("./service"));
 const { hostProfile, guestProfile, user } = database_1.default;
@@ -47,3 +47,20 @@ function createNewUser(req, res) {
     });
 }
 exports.createNewUser = createNewUser;
+function deleteUser(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { id } = req.currentUser;
+        try {
+            yield user.delete({
+                where: {
+                    id,
+                },
+            });
+            res.json("deleted");
+        }
+        catch (error) {
+            res.status(401).json(error);
+        }
+    });
+}
+exports.deleteUser = deleteUser;
