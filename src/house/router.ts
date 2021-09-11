@@ -1,24 +1,30 @@
-import { Router } from "express"
-import { uploadMiddleware } from "../middleware"
+import { Router } from "express";
+import { uploadMiddleware } from "../middleware";
+import tokenMiddleware from "../middleware";
 import {
   getAllHouses,
   deleteHouseById,
   getOneHouse,
   createOneHouse,
   updateOneHouse,
-} from "./controller"
+} from "./controller";
 
-const houseRouter = Router()
+const houseRouter = Router();
 
-houseRouter.get("/", getAllHouses)
+houseRouter.get("/", getAllHouses);
 
-houseRouter.get("/:id", getOneHouse)
+houseRouter.get("/:id", getOneHouse);
 
-houseRouter.patch("/:id", updateOneHouse)
+houseRouter.patch("/:id", tokenMiddleware, updateOneHouse);
 
 // uploadMiddleware is the reusable bit. Add specific key we're expecting.
-houseRouter.post("/", uploadMiddleware.array("pictures"), createOneHouse)
+houseRouter.post(
+  "/",
+  tokenMiddleware,
+  uploadMiddleware.array("pictures"),
+  createOneHouse
+);
 
-houseRouter.delete("/:id", deleteHouseById)
+houseRouter.delete("/:id", deleteHouseById);
 
-export default houseRouter
+export default houseRouter;
