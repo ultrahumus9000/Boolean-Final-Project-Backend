@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateOneHouse = exports.createOneHouse = exports.getOneHouse = exports.deleteHouseById = exports.getAllHouses = void 0;
 const database_1 = __importDefault(require("../database"));
 const service_1 = require("./service");
-const { house, picture } = database_1.default;
+const { house, picture, hostProfile, user } = database_1.default;
 function getAllHouses(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         console.log("query", Object.keys(req.query).length);
@@ -159,47 +159,79 @@ exports.getOneHouse = getOneHouse;
 // media storage in cloud - Cloudinary
 // npm i multer-storage-cloudinary cloudinary
 function createOneHouse(req, res) {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         // const { id } = req.currentUser as User
         console.log("request body", req.body);
         const { name, city, bedrooms, maxGuests, facility, price } = req.body;
-        const { pictures } = req.body;
+        const pictures = req.files;
         console.log("pictures", pictures);
-        // const images = pictures.map(picture => ({
-        //   src: picture.file,
-        //   alt: pictures.name,
-        // }))
-        // console.log("images", images)
-        // try {
-        //   const newHouse = await house.create({
-        //     data: {
-        //       name: name,
-        //       city: city,
-        //       pictures: {
-        //         createMany: {
-        //           data: [
-        //             // images
-        //             { src: pictures[0].file, alt: pictures[0].name },
-        //             { src: pictures[1].file, alt: pictures[1].name },
-        //             { src: pictures[2].file, alt: pictures[2].name },
-        //           ],
-        //         },
-        //       },
-        //       bedrooms: parseInt(bedrooms),
-        //       maxGuests: parseInt(maxGuests),
-        //       facility: facility,
-        //       price: parseInt(price),
-        //       hostId: 1,
-        //     },
-        //   })
-        //   res.json(newHouse)
-        // } catch (error) {
-        //   console.log(error)
-        //   res.json(error)
-        // }
+        const images = pictures === null || pictures === void 0 ? void 0 : pictures.map((picture) => {
+            var fields = picture.originalname.split(".");
+            var houseAlt = fields[0];
+            const newPicture = {
+                src: picture.path,
+                alt: houseAlt,
+            };
+            return newPicture;
+        });
+        try {
+            const hostInfo = yield user.findUnique({
+                where: {
+                    id: 1,
+                },
+                select: {
+                    hostProfile: {
+                        select: {
+                            id: true,
+                        },
+                    },
+                },
+            });
+            const realHostId = (_a = hostInfo === null || hostInfo === void 0 ? void 0 : hostInfo.hostProfile) === null || _a === void 0 ? void 0 : _a.id;
+            if (realHostId === undefined) {
+                return;
+            }
+            const newHouse = yield house.create({
+                data: {
+                    name: name,
+                    city: city,
+                    pictures: {
+                        createMany: {
+                            data: [...images],
+                        },
+                    },
+                    bedrooms: parseInt(bedrooms),
+                    maxGuests: parseInt(maxGuests),
+                    facility: facility,
+                    price: parseInt(price),
+                    hostId: realHostId,
+                },
+            });
+            res.json(newHouse);
+        }
+        catch (error) {
+            console.log(error);
+            res.json(error);
+        }
     });
 }
 exports.createOneHouse = createOneHouse;
+// model House {
+//   id          Int         @id @default(autoincrement())
+//   name        String
+//   bedrooms    Int
+//   maxGuests   Int
+//   facility    String[]
+//   city        String
+//   wishList    WishList[]
+//   hostProfile HostProfile @relation(fields: [hostId], references: [id], onDelete: Cascade)
+//   hostId      Int
+//   price       Int
+//   reviews     Review[]
+//   pictures    Picture[]
+//   bookings    Booking[]
+// }
 function updateOneHouse(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const houseId = Number(req.params.id);
