@@ -13,5 +13,5 @@ houseRouter.get("/:id", controller_1.getOneHouse);
 houseRouter.patch("/:id", middleware_2.default, controller_1.updateOneHouse);
 // uploadMiddleware is the reusable bit. Add specific key we're expecting.
 houseRouter.post("/", middleware_2.default, middleware_1.uploadMiddleware.array("pictures"), controller_1.createOneHouse);
-houseRouter.delete("/:id", controller_1.deleteHouseById);
+houseRouter.delete("/:id", middleware_2.default, controller_1.deleteHouseById);
 exports.default = houseRouter;

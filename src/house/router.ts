@@ -25,6 +25,6 @@ houseRouter.post(
   createOneHouse
 );
 
-houseRouter.delete("/:id", deleteHouseById);
+houseRouter.delete("/:id", tokenMiddleware, deleteHouseById);
 
 export default houseRouter;

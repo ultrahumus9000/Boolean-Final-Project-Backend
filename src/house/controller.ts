@@ -73,20 +73,26 @@ async function getAllHouses(req: Request, res: Response) {
       res.json(houses);
     }
   } catch (error) {
+    console.log(error);
     res.json(error);
   }
 }
 
 async function deleteHouseById(req: Request, res: Response) {
   const houseId = Number(req.params.id);
+  console.log("houseId", houseId);
+  console.log("type of houseId", typeof houseId);
   try {
     await house.delete({
       where: {
         id: houseId,
       },
     });
+
+    console.log("i am successfull deleting");
     res.json("this house of listing is deleted ");
   } catch (error) {
+    console.log(error);
     res.json(error);
   }
 }
@@ -155,7 +161,7 @@ async function getOneHouse(req: Request, res: Response) {
 // media storage in cloud - Cloudinary
 // npm i multer-storage-cloudinary cloudinary
 async function createOneHouse(req: Request, res: Response) {
-  // const { id } = req.currentUser as User
+  const { id } = req.currentUser as User;
   console.log("request body", req.body);
   const { name, city, bedrooms, maxGuests, facility, price } = req.body;
 
@@ -178,7 +184,7 @@ async function createOneHouse(req: Request, res: Response) {
   try {
     const hostInfo = await user.findUnique({
       where: {
-        id: 1,
+        id,
       },
       select: {
         hostProfile: {

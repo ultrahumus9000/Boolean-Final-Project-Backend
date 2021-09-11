@@ -73,6 +73,7 @@ function getAllHouses(req, res) {
             }
         }
         catch (error) {
+            console.log(error);
             res.json(error);
         }
     });
@@ -81,15 +82,19 @@ exports.getAllHouses = getAllHouses;
 function deleteHouseById(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const houseId = Number(req.params.id);
+        console.log("houseId", houseId);
+        console.log("type of houseId", typeof houseId);
         try {
             yield house.delete({
                 where: {
                     id: houseId,
                 },
             });
+            console.log("i am successfull deleting");
             res.json("this house of listing is deleted ");
         }
         catch (error) {
+            console.log(error);
             res.json(error);
         }
     });
@@ -161,7 +166,7 @@ exports.getOneHouse = getOneHouse;
 function createOneHouse(req, res) {
     var _a;
     return __awaiter(this, void 0, void 0, function* () {
-        // const { id } = req.currentUser as User
+        const { id } = req.currentUser;
         console.log("request body", req.body);
         const { name, city, bedrooms, maxGuests, facility, price } = req.body;
         const pictures = req.files;
@@ -178,7 +183,7 @@ function createOneHouse(req, res) {
         try {
             const hostInfo = yield user.findUnique({
                 where: {
-                    id: 1,
+                    id,
                 },
                 select: {
                     hostProfile: {
