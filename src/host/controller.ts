@@ -53,10 +53,27 @@ async function switchToGuest(req: Request, res: Response) {
 
 async function fetchHouseForHost(req: Request, res: Response) {
   const { id } = req.currentUser as User;
+  console.log("current user id", id);
   try {
+    const hostInfo = await user.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        hostProfile: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+    const realHostId = hostInfo?.hostProfile?.id;
+    if (realHostId === undefined) {
+      return;
+    }
     const houses = await house.findMany({
       where: {
-        hostId: id,
+        hostId: realHostId,
       },
       include: {
         pictures: {

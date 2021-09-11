@@ -65,12 +65,30 @@ function switchToGuest(req, res) {
 }
 exports.switchToGuest = switchToGuest;
 function fetchHouseForHost(req, res) {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         const { id } = req.currentUser;
+        console.log("current user id", id);
         try {
+            const hostInfo = yield user.findUnique({
+                where: {
+                    id,
+                },
+                select: {
+                    hostProfile: {
+                        select: {
+                            id: true,
+                        },
+                    },
+                },
+            });
+            const realHostId = (_a = hostInfo === null || hostInfo === void 0 ? void 0 : hostInfo.hostProfile) === null || _a === void 0 ? void 0 : _a.id;
+            if (realHostId === undefined) {
+                return;
+            }
             const houses = yield house.findMany({
                 where: {
-                    hostId: id,
+                    hostId: realHostId,
                 },
                 include: {
                     pictures: {
