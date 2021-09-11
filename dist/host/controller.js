@@ -92,6 +92,7 @@ function fetchHouseForHost(req, res) {
                 include: {
                     pictures: {
                         select: {
+                            id: true,
                             src: true,
                         },
                     },

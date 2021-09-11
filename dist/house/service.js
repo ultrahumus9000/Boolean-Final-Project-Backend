@@ -51,6 +51,7 @@ const queryContent = {
         },
         pictures: {
             select: {
+                id: true,
                 src: true,
                 alt: true,
             },

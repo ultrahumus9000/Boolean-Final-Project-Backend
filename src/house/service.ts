@@ -11,6 +11,7 @@ export type Query = {
 };
 
 type Picture = {
+  id: number;
   src: string;
   alt: string;
 };
@@ -89,6 +90,7 @@ const queryContent = {
     },
     pictures: {
       select: {
+        id: true,
         src: true,
         alt: true,
       },

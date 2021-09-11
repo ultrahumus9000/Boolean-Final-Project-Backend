@@ -61,6 +61,7 @@ async function getAllHouses(req: Request, res: Response) {
           },
           pictures: {
             select: {
+              id: true,
               src: true,
               alt: true,
             },
@@ -141,6 +142,7 @@ async function getOneHouse(req: Request, res: Response) {
         },
         pictures: {
           select: {
+            id: true,
             src: true,
             alt: true,
           },

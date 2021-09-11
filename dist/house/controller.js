@@ -62,6 +62,7 @@ function getAllHouses(req, res) {
                         },
                         pictures: {
                             select: {
+                                id: true,
                                 src: true,
                                 alt: true,
                             },
@@ -143,6 +144,7 @@ function getOneHouse(req, res) {
                     },
                     pictures: {
                         select: {
+                            id: true,
                             src: true,
                             alt: true,
                         },

@@ -77,6 +77,7 @@ async function fetchHouseForHost(req: Request, res: Response) {
       include: {
         pictures: {
           select: {
+            id: true,
             src: true,
           },
         },
