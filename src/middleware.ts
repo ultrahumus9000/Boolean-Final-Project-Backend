@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { validateToken } from "./authgenerator";
 import { JwtPayload } from "jsonwebtoken";
 import multer from "multer";
-const cloudinary = require("cloudinary");
+import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 
 declare global {
@@ -37,7 +37,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
 //   api_secret: process.env.API_SECRET,
 // })
 
-cloudinary.v2.config({
+cloudinary.config({
   cloud_name: "dbgddkrl6",
   api_key: "466338443968922",
   api_secret: process.env.API_SECRET,

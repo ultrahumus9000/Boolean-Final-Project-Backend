@@ -166,11 +166,11 @@ exports.getOneHouse = getOneHouse;
 function createOneHouse(req, res) {
     var _a;
     return __awaiter(this, void 0, void 0, function* () {
+        console.log("i am creating");
         const { id } = req.currentUser;
         console.log("request body", req.body);
         const { name, city, bedrooms, maxGuests, facility, price } = req.body;
         const pictures = req.files;
-        console.log("pictures", pictures);
         const images = pictures === null || pictures === void 0 ? void 0 : pictures.map((picture) => {
             var fields = picture.originalname.split(".");
             var houseAlt = fields[0];

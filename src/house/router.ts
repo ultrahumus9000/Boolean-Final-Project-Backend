@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { NextFunction, Router, Request, Response } from "express";
 import { uploadMiddleware } from "../middleware";
 import tokenMiddleware from "../middleware";
 import {

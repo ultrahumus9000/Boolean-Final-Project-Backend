@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.uploadMiddleware = void 0;
 const authgenerator_1 = require("./authgenerator");
 const multer_1 = __importDefault(require("multer"));
-const cloudinary = require("cloudinary");
+const cloudinary_1 = require("cloudinary");
 const multer_storage_cloudinary_1 = require("multer-storage-cloudinary");
 exports.default = (req, res, next) => {
     const { token } = req.cookies;
@@ -25,13 +25,13 @@ exports.default = (req, res, next) => {
 //   api_key: "466338443968922",
 //   api_secret: process.env.API_SECRET,
 // })
-cloudinary.v2.config({
+cloudinary_1.v2.config({
     cloud_name: "dbgddkrl6",
     api_key: "466338443968922",
     api_secret: process.env.API_SECRET,
 });
 const storage = new multer_storage_cloudinary_1.CloudinaryStorage({
-    cloudinary: cloudinary,
+    cloudinary: cloudinary_1.v2,
 });
 // uploadMiddleware is the reusable bit. Add specific key we're expecting in the specific router you need it for.
 // uploadMiddleware.array("pictures")  <<< this bit in router path.
