@@ -82,8 +82,8 @@ model Booking {
   total        Int          @default(0)
   guestProfile GuestProfile @relation(fields: [guestId], references: [id], onDelete: Cascade)
   guestId      Int
-  start        DateTime     @unique @db.Date
-  end          DateTime     @unique @db.Date
+  start        DateTime
+  end          DateTime
   house        House        @relation(fields: [houseId], references: [id], onDelete: Cascade)
   houseId      Int
 }
