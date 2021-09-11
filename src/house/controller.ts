@@ -161,7 +161,6 @@ async function getOneHouse(req: Request, res: Response) {
 // media storage in cloud - Cloudinary
 // npm i multer-storage-cloudinary cloudinary
 async function createOneHouse(req: Request, res: Response) {
-  console.log("i am creating");
   const { id } = req.currentUser as User;
   console.log("request body", req.body);
   const { name, city, bedrooms, maxGuests, facility, price } = req.body;

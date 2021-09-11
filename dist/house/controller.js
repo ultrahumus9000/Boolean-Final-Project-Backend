@@ -166,7 +166,6 @@ exports.getOneHouse = getOneHouse;
 function createOneHouse(req, res) {
     var _a;
     return __awaiter(this, void 0, void 0, function* () {
-        console.log("i am creating");
         const { id } = req.currentUser;
         console.log("request body", req.body);
         const { name, city, bedrooms, maxGuests, facility, price } = req.body;
