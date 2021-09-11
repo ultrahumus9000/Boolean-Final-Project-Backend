@@ -49,7 +49,7 @@ async function createBooking(req: Request, res: Response) {
 
     const checkBookingStartDate = await booking.findFirst({
       where: {
-        id: Number(houseId),
+        houseId: Number(houseId),
         AND: [
           {
             start: {
@@ -67,7 +67,7 @@ async function createBooking(req: Request, res: Response) {
 
     const checkBookingEndDate = await booking.findFirst({
       where: {
-        id: Number(houseId),
+        houseId: Number(houseId),
         AND: [
           {
             start: {

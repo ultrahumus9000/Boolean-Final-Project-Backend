@@ -45,7 +45,7 @@ function createBooking(req, res) {
             }
             const checkBookingStartDate = yield booking.findFirst({
                 where: {
-                    id: Number(houseId),
+                    houseId: Number(houseId),
                     AND: [
                         {
                             start: {
@@ -62,7 +62,7 @@ function createBooking(req, res) {
             });
             const checkBookingEndDate = yield booking.findFirst({
                 where: {
-                    id: Number(houseId),
+                    houseId: Number(houseId),
                     AND: [
                         {
                             start: {
