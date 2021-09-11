@@ -53,7 +53,6 @@ async function switchToGuest(req: Request, res: Response) {
 
 async function fetchHouseForHost(req: Request, res: Response) {
   const { id } = req.currentUser as User;
-  console.log("current user id", id);
   try {
     const hostInfo = await user.findUnique({
       where: {

@@ -68,7 +68,6 @@ function fetchHouseForHost(req, res) {
     var _a;
     return __awaiter(this, void 0, void 0, function* () {
         const { id } = req.currentUser;
-        console.log("current user id", id);
         try {
             const hostInfo = yield user.findUnique({
                 where: {
