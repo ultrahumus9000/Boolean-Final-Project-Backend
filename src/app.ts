@@ -18,7 +18,12 @@ var app = express();
 app.use(logger("dev"));
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 
 // house routes has to be put before token check so that everyone can view houses
 app.use("/houses", houseRouter);
