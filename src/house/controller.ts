@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import db from "../database";
 import { getFilteredHouses, modifiedHouses } from "./service";
 import { Query } from "./service";
-
+import { queryContent } from "./service";
 const { house, picture, hostProfile, user } = db;
 
 type Pictures = {
@@ -25,48 +25,7 @@ async function getAllHouses(req: Request, res: Response) {
       res.json(houses);
     } else {
       const rawData = await house.findMany({
-        select: {
-          id: true,
-          name: true,
-          bedrooms: true,
-          maxGuests: true,
-          facility: true,
-          city: true,
-          hostProfile: {
-            select: {
-              user: {
-                select: {
-                  username: true,
-                  avatar: true,
-                },
-              },
-            },
-          },
-
-          price: true,
-          reviews: {
-            select: {
-              content: true,
-              guestProfile: {
-                select: {
-                  user: {
-                    select: {
-                      username: true,
-                      avatar: true,
-                    },
-                  },
-                },
-              },
-            },
-          },
-          pictures: {
-            select: {
-              id: true,
-              src: true,
-              alt: true,
-            },
-          },
-        },
+        ...queryContent,
       });
 
       const houses = await modifiedHouses(rawData);
@@ -89,8 +48,6 @@ async function deleteHouseById(req: Request, res: Response) {
         id: houseId,
       },
     });
-
-    console.log("i am successfull deleting");
     res.json("this house of listing is deleted ");
   } catch (error) {
     console.log(error);
@@ -106,48 +63,7 @@ async function getOneHouse(req: Request, res: Response) {
       where: {
         id: houseId,
       },
-      select: {
-        id: true,
-        name: true,
-        bedrooms: true,
-        maxGuests: true,
-        facility: true,
-        city: true,
-        hostProfile: {
-          select: {
-            user: {
-              select: {
-                username: true,
-                avatar: true,
-              },
-            },
-          },
-        },
-
-        price: true,
-        reviews: {
-          select: {
-            content: true,
-            guestProfile: {
-              select: {
-                user: {
-                  select: {
-                    username: true,
-                    avatar: true,
-                  },
-                },
-              },
-            },
-          },
-        },
-        pictures: {
-          select: {
-            id: true,
-            src: true,
-            alt: true,
-          },
-        },
-      },
+      ...queryContent,
     });
 
     if (targetHouse?.pictures.length) {
@@ -237,34 +153,74 @@ async function createOneHouse(req: Request, res: Response) {
 //   bookings    Booking[]
 // }
 
+// {
+//   "id": 23,
+//   "name": "seren",
+//   "bedrooms": 1,
+//   "maxGuests": 5,
+//   "facility": [
+//       "Balcony",
+//       "Bathtub",
+//       "Bidet",
+//       "Jacuzzi"
+//   ],
+//   "city": "Sheffield",
+//   "hostProfile": "Barrows123",
+//   "price": 60,
+//   "reviews": [],
+//   "pictures": [
+//       {
+//           "id": 42,
+//           "src": "https://res.cloudinary.com/dbgddkrl6/image/upload/v1631393863/cxxjjeckhfxj6r0qquzz.jpg",
+//           "alt": "whole house"
+//       },
+//       {
+//           "id": 0,
+//           "src": "https://images.pexels.com/photos/2121121/pexels-photo-2121121.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
+//           "alt": "any"
+//       }
+//   ],
+//   "hostAvatar": "https://images.pexels.com/photos/2648203/pexels-photo-2648203.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
+// }
+
 async function updateOneHouse(req: Request, res: Response) {
   const houseId = Number(req.params.id);
+  const updatedHouse = req.body;
+  let {
+    id,
+    hostProfile,
+    hostAvatar,
+    reviews,
+    pictures,
+    bedrooms,
+    maxGuests,
+    price,
+    ...basicHouseInfo
+  } = updatedHouse;
+
+  basicHouseInfo = {
+    ...basicHouseInfo,
+    bedrooms: parseInt(bedrooms),
+    maxGuests: parseInt(maxGuests),
+    price: parseInt(price),
+  };
   try {
-    const orginalHouseInfo = await house.findUnique({
-      where: {
-        id: houseId,
-      },
-    });
     const newHouseInfo = await house.update({
       where: {
         id: houseId,
       },
       data: {
-        ...orginalHouseInfo,
-        ...req.body,
+        ...basicHouseInfo,
       },
+      ...queryContent,
     });
-
+    console.log(newHouseInfo);
     res.json(newHouseInfo);
   } catch (error) {
     console.log(error);
     res.json(error);
   }
 }
-
-// async function delete(params:type) {
-
-// }
 
 export {
   getAllHouses,

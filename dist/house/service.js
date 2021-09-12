@@ -12,10 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.modifiedHouses = exports.getFilteredHouses = void 0;
+exports.modifiedHouses = exports.getFilteredHouses = exports.queryContent = void 0;
 const database_1 = __importDefault(require("../database"));
 const { house } = database_1.default;
-const queryContent = {
+exports.queryContent = {
     select: {
         id: true,
         name: true,
@@ -78,7 +78,7 @@ function getFilteredHouses(query) {
                             },
                         },
                     },
-                } }, queryContent));
+                } }, exports.queryContent));
             console.log("filteredHouses", filteredHouses);
             return filteredHouses;
         }

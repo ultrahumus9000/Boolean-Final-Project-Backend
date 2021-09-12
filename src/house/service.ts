@@ -53,7 +53,7 @@ type HouseType = {
   reviews: Review[];
 };
 
-const queryContent = {
+export const queryContent = {
   select: {
     id: true,
     name: true,

@@ -8,6 +8,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -15,6 +26,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateOneHouse = exports.createOneHouse = exports.getOneHouse = exports.deleteHouseById = exports.getAllHouses = void 0;
 const database_1 = __importDefault(require("../database"));
 const service_1 = require("./service");
+const service_2 = require("./service");
 const { house, picture, hostProfile, user } = database_1.default;
 function getAllHouses(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -26,49 +38,7 @@ function getAllHouses(req, res) {
                 res.json(houses);
             }
             else {
-                const rawData = yield house.findMany({
-                    select: {
-                        id: true,
-                        name: true,
-                        bedrooms: true,
-                        maxGuests: true,
-                        facility: true,
-                        city: true,
-                        hostProfile: {
-                            select: {
-                                user: {
-                                    select: {
-                                        username: true,
-                                        avatar: true,
-                                    },
-                                },
-                            },
-                        },
-                        price: true,
-                        reviews: {
-                            select: {
-                                content: true,
-                                guestProfile: {
-                                    select: {
-                                        user: {
-                                            select: {
-                                                username: true,
-                                                avatar: true,
-                                            },
-                                        },
-                                    },
-                                },
-                            },
-                        },
-                        pictures: {
-                            select: {
-                                id: true,
-                                src: true,
-                                alt: true,
-                            },
-                        },
-                    },
-                });
+                const rawData = yield house.findMany(Object.assign({}, service_2.queryContent));
                 const houses = yield (0, service_1.modifiedHouses)(rawData);
                 res.json(houses);
             }
@@ -91,7 +61,6 @@ function deleteHouseById(req, res) {
                     id: houseId,
                 },
             });
-            console.log("i am successfull deleting");
             res.json("this house of listing is deleted ");
         }
         catch (error) {
@@ -105,52 +74,9 @@ function getOneHouse(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const houseId = Number(req.params.id);
         try {
-            const targetHouse = yield house.findUnique({
-                where: {
+            const targetHouse = yield house.findUnique(Object.assign({ where: {
                     id: houseId,
-                },
-                select: {
-                    id: true,
-                    name: true,
-                    bedrooms: true,
-                    maxGuests: true,
-                    facility: true,
-                    city: true,
-                    hostProfile: {
-                        select: {
-                            user: {
-                                select: {
-                                    username: true,
-                                    avatar: true,
-                                },
-                            },
-                        },
-                    },
-                    price: true,
-                    reviews: {
-                        select: {
-                            content: true,
-                            guestProfile: {
-                                select: {
-                                    user: {
-                                        select: {
-                                            username: true,
-                                            avatar: true,
-                                        },
-                                    },
-                                },
-                            },
-                        },
-                    },
-                    pictures: {
-                        select: {
-                            id: true,
-                            src: true,
-                            alt: true,
-                        },
-                    },
-                },
-            });
+                } }, service_2.queryContent));
             if (targetHouse === null || targetHouse === void 0 ? void 0 : targetHouse.pictures.length) {
                 const modifiedHouse = yield (0, service_1.modifiedHouses)([targetHouse]);
                 res.json(modifiedHouse[0]);
@@ -238,21 +164,46 @@ exports.createOneHouse = createOneHouse;
 //   pictures    Picture[]
 //   bookings    Booking[]
 // }
+// {
+//   "id": 23,
+//   "name": "seren",
+//   "bedrooms": 1,
+//   "maxGuests": 5,
+//   "facility": [
+//       "Balcony",
+//       "Bathtub",
+//       "Bidet",
+//       "Jacuzzi"
+//   ],
+//   "city": "Sheffield",
+//   "hostProfile": "Barrows123",
+//   "price": 60,
+//   "reviews": [],
+//   "pictures": [
+//       {
+//           "id": 42,
+//           "src": "https://res.cloudinary.com/dbgddkrl6/image/upload/v1631393863/cxxjjeckhfxj6r0qquzz.jpg",
+//           "alt": "whole house"
+//       },
+//       {
+//           "id": 0,
+//           "src": "https://images.pexels.com/photos/2121121/pexels-photo-2121121.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
+//           "alt": "any"
+//       }
+//   ],
+//   "hostAvatar": "https://images.pexels.com/photos/2648203/pexels-photo-2648203.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
+// }
 function updateOneHouse(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const houseId = Number(req.params.id);
+        const updatedHouse = req.body;
+        let { id, hostProfile, hostAvatar, reviews, pictures, bedrooms, maxGuests, price } = updatedHouse, basicHouseInfo = __rest(updatedHouse, ["id", "hostProfile", "hostAvatar", "reviews", "pictures", "bedrooms", "maxGuests", "price"]);
+        basicHouseInfo = Object.assign(Object.assign({}, basicHouseInfo), { bedrooms: parseInt(bedrooms), maxGuests: parseInt(maxGuests), price: parseInt(price) });
         try {
-            const orginalHouseInfo = yield house.findUnique({
-                where: {
+            const newHouseInfo = yield house.update(Object.assign({ where: {
                     id: houseId,
-                },
-            });
-            const newHouseInfo = yield house.update({
-                where: {
-                    id: houseId,
-                },
-                data: Object.assign(Object.assign({}, orginalHouseInfo), req.body),
-            });
+                }, data: Object.assign({}, basicHouseInfo) }, service_2.queryContent));
+            console.log(newHouseInfo);
             res.json(newHouseInfo);
         }
         catch (error) {
