@@ -16,6 +16,11 @@ type Pictures = {
   size: number;
 };
 
+type FormPicture = {
+  id: number;
+  alt: string;
+  src: string;
+};
 async function getAllHouses(req: Request, res: Response) {
   console.log("query", Object.keys(req.query).length);
   try {
@@ -204,7 +209,70 @@ async function updateOneHouse(req: Request, res: Response) {
     maxGuests: parseInt(maxGuests),
     price: parseInt(price),
   };
+
+  const newPictures = pictures.filter(
+    (picture: FormPicture) => picture.id <= 0
+  );
+
+  const orginalPicturesLeft = pictures.filter(
+    (picture: FormPicture) => picture.id > 0
+  );
+
+  const modifiedorginalPicturesLeftIds = orginalPicturesLeft.map(
+    (picture: FormPicture) => picture.id
+  );
+
+  // console.log("orginalPicturesLeft", modifiedorginalPicturesLeftIds);
+
   try {
+    const orginalPictures = await picture.findMany({
+      where: {
+        houseId,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    const modifiedOriginalPicturesIds = orginalPictures.map(
+      (picture) => picture.id
+    );
+    console.log("orginalPictures", modifiedOriginalPicturesIds);
+
+    let deletedPicturesIds = modifiedOriginalPicturesIds.filter((pictureId) => {
+      return modifiedorginalPicturesLeftIds.indexOf(pictureId) === -1;
+    });
+
+    // console.log("deletedPicturesIds", deletedPicturesIds);
+
+    if (!deletedPicturesIds.length) {
+      const deletedArray = deletedPicturesIds.map(async (pictureId) => {
+        await picture.delete({
+          where: {
+            id: pictureId,
+          },
+        });
+        return true;
+      });
+
+      await Promise.all(deletedArray);
+    }
+
+    if (!newPictures.length) {
+      const newAddedResults = newPictures.map(
+        async (newPicture: FormPicture) => {
+          await picture.create({
+            data: {
+              houseId,
+              alt: newPicture.alt,
+              src: newPicture.src,
+            },
+          });
+          return true;
+        }
+      );
+      await Promise.all(newAddedResults);
+    }
     const newHouseInfo = await house.update({
       where: {
         id: houseId,
@@ -214,6 +282,7 @@ async function updateOneHouse(req: Request, res: Response) {
       },
       ...queryContent,
     });
+
     console.log(newHouseInfo);
     res.json(newHouseInfo);
   } catch (error) {

@@ -199,7 +199,49 @@ function updateOneHouse(req, res) {
         const updatedHouse = req.body;
         let { id, hostProfile, hostAvatar, reviews, pictures, bedrooms, maxGuests, price } = updatedHouse, basicHouseInfo = __rest(updatedHouse, ["id", "hostProfile", "hostAvatar", "reviews", "pictures", "bedrooms", "maxGuests", "price"]);
         basicHouseInfo = Object.assign(Object.assign({}, basicHouseInfo), { bedrooms: parseInt(bedrooms), maxGuests: parseInt(maxGuests), price: parseInt(price) });
+        const newPictures = pictures.filter((picture) => picture.id <= 0);
+        const orginalPicturesLeft = pictures.filter((picture) => picture.id > 0);
+        const modifiedorginalPicturesLeftIds = orginalPicturesLeft.map((picture) => picture.id);
+        // console.log("orginalPicturesLeft", modifiedorginalPicturesLeftIds);
         try {
+            const orginalPictures = yield picture.findMany({
+                where: {
+                    houseId,
+                },
+                select: {
+                    id: true,
+                },
+            });
+            const modifiedOriginalPicturesIds = orginalPictures.map((picture) => picture.id);
+            console.log("orginalPictures", modifiedOriginalPicturesIds);
+            let deletedPicturesIds = modifiedOriginalPicturesIds.filter((pictureId) => {
+                return modifiedorginalPicturesLeftIds.indexOf(pictureId) === -1;
+            });
+            // console.log("deletedPicturesIds", deletedPicturesIds);
+            if (!deletedPicturesIds.length) {
+                const deletedArray = deletedPicturesIds.map((pictureId) => __awaiter(this, void 0, void 0, function* () {
+                    yield picture.delete({
+                        where: {
+                            id: pictureId,
+                        },
+                    });
+                    return true;
+                }));
+                yield Promise.all(deletedArray);
+            }
+            if (!newPictures.length) {
+                const newAddedResults = newPictures.map((newPicture) => __awaiter(this, void 0, void 0, function* () {
+                    yield picture.create({
+                        data: {
+                            houseId,
+                            alt: newPicture.alt,
+                            src: newPicture.src,
+                        },
+                    });
+                    return true;
+                }));
+                yield Promise.all(newAddedResults);
+            }
             const newHouseInfo = yield house.update(Object.assign({ where: {
                     id: houseId,
                 }, data: Object.assign({}, basicHouseInfo) }, service_2.queryContent));
