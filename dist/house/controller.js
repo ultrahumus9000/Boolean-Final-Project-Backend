@@ -200,6 +200,7 @@ function updateOneHouse(req, res) {
         let { id, hostProfile, hostAvatar, reviews, pictures, bedrooms, maxGuests, price } = updatedHouse, basicHouseInfo = __rest(updatedHouse, ["id", "hostProfile", "hostAvatar", "reviews", "pictures", "bedrooms", "maxGuests", "price"]);
         basicHouseInfo = Object.assign(Object.assign({}, basicHouseInfo), { bedrooms: parseInt(bedrooms), maxGuests: parseInt(maxGuests), price: parseInt(price) });
         const newPictures = pictures.filter((picture) => picture.id <= 0);
+        console.log("newPictures line 217", newPictures);
         const orginalPicturesLeft = pictures.filter((picture) => picture.id > 0);
         const modifiedorginalPicturesLeftIds = orginalPicturesLeft.map((picture) => picture.id);
         // console.log("orginalPicturesLeft", modifiedorginalPicturesLeftIds);
@@ -213,12 +214,12 @@ function updateOneHouse(req, res) {
                 },
             });
             const modifiedOriginalPicturesIds = orginalPictures.map((picture) => picture.id);
-            console.log("orginalPictures", modifiedOriginalPicturesIds);
+            // console.log("orginalPictures", modifiedOriginalPicturesIds);
             let deletedPicturesIds = modifiedOriginalPicturesIds.filter((pictureId) => {
                 return modifiedorginalPicturesLeftIds.indexOf(pictureId) === -1;
             });
             // console.log("deletedPicturesIds", deletedPicturesIds);
-            if (!deletedPicturesIds.length) {
+            if (deletedPicturesIds.length) {
                 const deletedArray = deletedPicturesIds.map((pictureId) => __awaiter(this, void 0, void 0, function* () {
                     yield picture.delete({
                         where: {
@@ -229,16 +230,17 @@ function updateOneHouse(req, res) {
                 }));
                 yield Promise.all(deletedArray);
             }
-            if (!newPictures.length) {
+            if (newPictures.length) {
+                console.log("i am creating");
                 const newAddedResults = newPictures.map((newPicture) => __awaiter(this, void 0, void 0, function* () {
-                    yield picture.create({
+                    const pictureObj = yield picture.create({
                         data: {
                             houseId,
                             alt: newPicture.alt,
                             src: newPicture.src,
                         },
                     });
-                    return true;
+                    return pictureObj;
                 }));
                 yield Promise.all(newAddedResults);
             }

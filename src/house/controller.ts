@@ -214,6 +214,8 @@ async function updateOneHouse(req: Request, res: Response) {
     (picture: FormPicture) => picture.id <= 0
   );
 
+  console.log("newPictures line 217", newPictures);
+
   const orginalPicturesLeft = pictures.filter(
     (picture: FormPicture) => picture.id > 0
   );
@@ -237,7 +239,7 @@ async function updateOneHouse(req: Request, res: Response) {
     const modifiedOriginalPicturesIds = orginalPictures.map(
       (picture) => picture.id
     );
-    console.log("orginalPictures", modifiedOriginalPicturesIds);
+    // console.log("orginalPictures", modifiedOriginalPicturesIds);
 
     let deletedPicturesIds = modifiedOriginalPicturesIds.filter((pictureId) => {
       return modifiedorginalPicturesLeftIds.indexOf(pictureId) === -1;
@@ -245,7 +247,7 @@ async function updateOneHouse(req: Request, res: Response) {
 
     // console.log("deletedPicturesIds", deletedPicturesIds);
 
-    if (!deletedPicturesIds.length) {
+    if (deletedPicturesIds.length) {
       const deletedArray = deletedPicturesIds.map(async (pictureId) => {
         await picture.delete({
           where: {
@@ -258,19 +260,21 @@ async function updateOneHouse(req: Request, res: Response) {
       await Promise.all(deletedArray);
     }
 
-    if (!newPictures.length) {
+    if (newPictures.length) {
+      console.log("i am creating");
       const newAddedResults = newPictures.map(
         async (newPicture: FormPicture) => {
-          await picture.create({
+          const pictureObj = await picture.create({
             data: {
               houseId,
               alt: newPicture.alt,
               src: newPicture.src,
             },
           });
-          return true;
+          return pictureObj;
         }
       );
+
       await Promise.all(newAddedResults);
     }
     const newHouseInfo = await house.update({
