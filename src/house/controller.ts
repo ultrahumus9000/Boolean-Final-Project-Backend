@@ -262,6 +262,10 @@ async function updateOneHouse(req: Request, res: Response) {
   }
 }
 
+// async function delete(params:type) {
+
+// }
+
 export {
   getAllHouses,
   deleteHouseById,
