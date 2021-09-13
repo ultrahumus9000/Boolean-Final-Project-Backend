@@ -1,6 +1,6 @@
 ### Install Instructions
 
-# replace "https://inspiring-nightingale-44a2d2.netlify.app/" to "http://localhost:3000" in the app.ts file
+# replace "https://inspiring-nightingale-44a2d2.netlify.app/" to "http://localhost:4000" in the app.ts file
 
 # run npm i then npm start
 
