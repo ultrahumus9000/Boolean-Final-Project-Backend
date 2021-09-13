@@ -13,6 +13,7 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const cors = require("cors");
 var app = express();
+app.enable("trust proxy");
 
 //middlewares
 app.use(logger("dev"));

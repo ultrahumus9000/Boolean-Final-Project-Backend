@@ -33,8 +33,7 @@ async function login(req: Request, res: Response) {
       avatar: loginUser.avatar,
       role: loggedRole,
     };
-    // res.json(loggedUser);
-    res.json(token);
+    res.json(loggedUser);
   } catch (error) {
     console.log(error);
     res.status(401).json(error);
