@@ -19,7 +19,7 @@ async function login(req: Request, res: Response) {
       username: loginUser.username,
       role: loggedRole,
     });
-
+    console.log("token in 22", token);
     res.cookie("token", token, {
       httpOnly: true,
       domain: "inspiring-nightingale-44a2d2.netlify.app",
