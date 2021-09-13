@@ -24,6 +24,7 @@ async function login(req: Request, res: Response) {
       httpOnly: true,
       domain: "inspiring-nightingale-44a2d2.netlify.app",
       secure: true,
+      sameSite: "none",
     });
 
     const loggedUser = {
