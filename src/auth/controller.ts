@@ -23,6 +23,7 @@ async function login(req: Request, res: Response) {
     res.cookie("token", token, {
       httpOnly: true,
       domain: "inspiring-nightingale-44a2d2.netlify.app",
+      secure: true,
     });
 
     const loggedUser = {
