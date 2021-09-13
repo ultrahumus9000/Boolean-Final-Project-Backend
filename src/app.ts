@@ -20,9 +20,8 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin:
-      "https://deploy-preview-1--inspiring-nightingale-44a2d2.netlify.app",
-    credentials: true,
+    origin: "*",
+    // credentials: true,
   })
 );
 
