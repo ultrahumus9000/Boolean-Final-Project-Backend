@@ -13,13 +13,12 @@ async function login(req: Request, res: Response) {
     const loginUser = await findUserWithValidation(userCredtial);
     const loggedRole = loginUser.guestRole ? "guest" : "host";
 
-    console.log("loginUser in backend", loginUser);
     const token = createToken({
       id: loginUser.id,
       username: loginUser.username,
       role: loggedRole,
     });
-    console.log("token in 22", token);
+
     res.cookie("token", token, {
       httpOnly: true,
       domain: "inspiring-nightingale-44a2d2.netlify.app",
@@ -34,7 +33,8 @@ async function login(req: Request, res: Response) {
       avatar: loginUser.avatar,
       role: loggedRole,
     };
-    res.json(loggedUser);
+    // res.json(loggedUser);
+    res.json(token);
   } catch (error) {
     console.log(error);
     res.status(401).json(error);
