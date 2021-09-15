@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-09-15T11:16:11.813Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36" etag="OUzzCZseRnMY13c9HX3f" version="15.0.3" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2021-09-15T11:23:40.410Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36" etag="5NpQJ0UBGP5nA3I2jGm7" version="15.0.3" type="github" pages="2">
   <diagram id="R2lEEEUBdFMjLlhIrx00" name="Page-1">
     <mxGraphModel dx="1577" dy="982" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="#F1FAEE" math="0" shadow="0" extFonts="Permanent Marker^https://fonts.googleapis.com/css?family=Permanent+Marker">
       <root>
@@ -503,7 +503,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="OMSpbQ4l9uBQ-8EhfjTj" name="Page-2">
-    <mxGraphModel dx="946" dy="589" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="583" math="0" shadow="0">
+    <mxGraphModel dx="1892" dy="1178" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="583" math="0" shadow="0">
       <root>
         <mxCell id="KqP0czGctXDPpCIXJYb9-0" />
         <mxCell id="KqP0czGctXDPpCIXJYb9-1" parent="KqP0czGctXDPpCIXJYb9-0" />
@@ -550,16 +550,16 @@
           <mxGeometry x="850" y="25" width="50" height="40" as="geometry" />
         </mxCell>
         <mxCell id="KqP0czGctXDPpCIXJYb9-31" value="" style="whiteSpace=wrap;html=1;aspect=fixed;rounded=0;sketch=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="KqP0czGctXDPpCIXJYb9-1">
-          <mxGeometry x="110" y="430" width="380" height="380" as="geometry" />
+          <mxGeometry x="530" y="830" width="380" height="380" as="geometry" />
         </mxCell>
         <mxCell id="KqP0czGctXDPpCIXJYb9-32" value="Buy page&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;sketch=0;fontColor=#1D3557;strokeColor=#457B9D;fillColor=#A8DADC;" vertex="1" parent="KqP0czGctXDPpCIXJYb9-1">
-          <mxGeometry x="150" y="460" width="290" height="70" as="geometry" />
+          <mxGeometry x="580" y="870" width="290" height="70" as="geometry" />
         </mxCell>
         <mxCell id="KqP0czGctXDPpCIXJYb9-33" value="transaction&amp;nbsp;" style="whiteSpace=wrap;html=1;aspect=fixed;rounded=0;sketch=0;fontColor=#1D3557;strokeColor=#457B9D;fillColor=#A8DADC;" vertex="1" parent="KqP0czGctXDPpCIXJYb9-1">
-          <mxGeometry x="150" y="590" width="150" height="150" as="geometry" />
+          <mxGeometry x="580" y="1000" width="150" height="150" as="geometry" />
         </mxCell>
         <mxCell id="KqP0czGctXDPpCIXJYb9-34" value="confirm" style="rounded=0;whiteSpace=wrap;html=1;sketch=0;fontColor=#1D3557;strokeColor=#457B9D;fillColor=#A8DADC;" vertex="1" parent="KqP0czGctXDPpCIXJYb9-1">
-          <mxGeometry x="380" y="595" width="60" height="140" as="geometry" />
+          <mxGeometry x="810" y="1005" width="60" height="140" as="geometry" />
         </mxCell>
         <mxCell id="KqP0czGctXDPpCIXJYb9-36" value="" style="whiteSpace=wrap;html=1;aspect=fixed;rounded=0;sketch=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="KqP0czGctXDPpCIXJYb9-1">
           <mxGeometry x="530" y="430" width="380" height="380" as="geometry" />
@@ -617,6 +617,15 @@
         </mxCell>
         <mxCell id="KqP0czGctXDPpCIXJYb9-55" value="repeat&lt;br&gt;schedule" style="rounded=0;whiteSpace=wrap;html=1;sketch=0;strokeColor=#ae4132;fillColor=#fad9d5;" vertex="1" parent="KqP0czGctXDPpCIXJYb9-1">
           <mxGeometry x="410" y="90" width="50" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="KqP0czGctXDPpCIXJYb9-57" value="" style="whiteSpace=wrap;html=1;aspect=fixed;rounded=0;sketch=0;fontColor=#1D3557;strokeColor=#457B9D;fillColor=#A8DADC;" vertex="1" parent="KqP0czGctXDPpCIXJYb9-1">
+          <mxGeometry x="120" y="420" width="380" height="380" as="geometry" />
+        </mxCell>
+        <mxCell id="KqP0czGctXDPpCIXJYb9-58" value="Admin Page" style="rounded=0;whiteSpace=wrap;html=1;sketch=0;" vertex="1" parent="KqP0czGctXDPpCIXJYb9-1">
+          <mxGeometry x="120" y="420" width="380" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="KqP0czGctXDPpCIXJYb9-59" value="create event form" style="rounded=1;whiteSpace=wrap;html=1;sketch=0;fontColor=#000000;strokeColor=#C73500;fillColor=#fa6800;" vertex="1" parent="KqP0czGctXDPpCIXJYb9-1">
+          <mxGeometry x="170" y="515" width="280" height="210" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
